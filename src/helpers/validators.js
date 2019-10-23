@@ -19,7 +19,7 @@
  * const lengthGreaterThenOne = x => x.length > 1;
  */
 
-import {replace, length, compose, test} from 'ramda';
+import { replace, length, compose, test, allPass, anyPass, lt, gt, match, equals, none } from 'ramda';
 
 const replaceNumbers = replace(/[^0-9]/g, '');
 
@@ -28,45 +28,112 @@ const getNumbersCount = compose(length, replaceNumbers);
 const containsOnlyEng = test(/^[a-zA-Z0-9.+]+$/);
 
 
+const ltThanTwo = x => lt(x, 2);
+
+const ltThanFour = x => lt(x, 4);
+
+const ltThanFive = x => lt(x, 5);
+
+const ltThanEight = x => lt(x, 8);
+
+const ltThanTen = x => lt(x, 10);
+
+
+const gtThanOne = x => gt(x, 1);
+
+const gtThanTwo = x => gt(x, 2);
+
+const gtThanThree = x => gt(x, 3);
+
+const gtThanFour= x => gt(x, 4);
+
+const gtThanFive = x => gt(x, 5);
+
+const gtThanEight = x => gt(x, 8);
+
+
+const eqZero = x => equals(x, 0);
+
+const eqOne = x => equals(x, 1);
+
+
 /**
  * Функции для проверки выполнения условий с количеством цифр в строке
  */
+
+const getNumbers = str => match(/[0-9]/g, str);
+
+const numCountGtThanOne = compose(gtThanOne, length, getNumbers);
+
+const numCountGtThanTwo = compose(gtThanTwo, length, getNumbers);
+
+const numCountGtThanThree = compose(gtThanThree, length, getNumbers);
+
+const numCountGtThanFour = compose(gtThanFour, length, getNumbers);
+
+const numCountLtThanTwo = compose(ltThanTwo, length, getNumbers);
+
+const numCountLtThanFive = compose(ltThanFive, length, getNumbers);
+
 
 /**
  * Функции для проверки выполнения условий с длиной строки
  */
 
+const strLengthLtThanFour = compose(ltThanFour, length);
+
+const strLengthLtThanFive = compose(ltThanFive, length);
+
+const strLengthLtThanEight = compose(ltThanEight, length);
+
+const strLengthLtThanTen = compose(ltThanTen, length);
+
+const strLengthGtThanFive = compose(gtThanFive, length);
+
+const strLengthGtThanEight = compose(gtThanEight, length);
+
+
 /**
  * Функции для проверки наличия конкретного символа в строке
  */
 
+const getNumFour = str => match(/[4]/g, str);
+
+const getNumSeven = str => match(/[7]/g, str);
+
+const strHasOneNumFour = compose(eqOne, length, getNumFour);
+
+const strHasOneNumSeven = compose(eqOne, length, getNumSeven);
+
+const strHasNoNumFour = compose(eqZero, length, getNumFour);
+
 
 // 1. Длина < 5 и кол-во цифр > 2 шт.
-export const validateFieldN1 = () => false;
+export const validateFieldN1 = allPass([strLengthLtThanFive, numCountGtThanTwo]);
 
 // 2. Длина < 5 и кол-во цифр < 2 шт.
-export const validateFieldN2 = () => false;
+export const validateFieldN2 = allPass([strLengthLtThanFive, numCountLtThanTwo]);
 
 // 3. Длина > 5 или кол-во цифр > 1 шт.
-export const validateFieldN3 = () => false;
+export const validateFieldN3 = anyPass([strLengthGtThanFive, numCountGtThanOne]);
 
 // 4. Длина < 10 и кол-во цифр > 2 шт. и одна из цифр равна "4"
-export const validateFieldN4 = () => false;
+export const validateFieldN4 = allPass([strLengthLtThanTen, numCountGtThanTwo, strHasOneNumFour]);
 
 // 5. Длина < 10 и кол-во цифр > 1 шт. и ни одна из цифр не равна "4"
-export const validateFieldN5 = () => false;
+export const validateFieldN5 = allPass([strLengthLtThanTen, numCountGtThanOne, strHasNoNumFour]);
 
 // 6. Длина > 5, или одна из цифр равна "7"
-export const validateFieldN6 = () => false;
+export const validateFieldN6 = anyPass([strLengthGtThanFive, strHasOneNumSeven]);
 
 // 7. Длина > 8 и кол-во цифр > 3 шт. и только англ
-export const validateFieldN7 = () => false;
+export const validateFieldN7 = allPass([strLengthGtThanEight, numCountGtThanThree, containsOnlyEng]);
 
 // 8. Кол-во цифр < 5 шт. или только англ или одна из цифр равна "7"
-export const validateFieldN8 = () => false;
+export const validateFieldN8 = anyPass([numCountLtThanFive, containsOnlyEng, strHasOneNumSeven]);
 
 // 9. Длина < 8, кол-во цифр > 4 шт. только англ
-export const validateFieldN9 = () => false;
+export const validateFieldN9 = allPass([strLengthLtThanEight, numCountGtThanFour, containsOnlyEng]);
 
 // 10. Длина < 4 или кол-во цифр > 2 шт. или только англ
-export const validateFieldN10 = () => false;
+export const validateFieldN10 = anyPass([strLengthLtThanFour, numCountGtThanTwo, containsOnlyEng]);
