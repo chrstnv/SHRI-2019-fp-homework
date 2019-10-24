@@ -4,8 +4,8 @@ const withDisplayInnerCount = WrappedComponent => props => {
   const { children, onClick, decrementCount, color, size } = props;
 
   return (
-    <span>
-      <div>Кликов: {decrementCount}</div>
+    <span style={{'margin-right': '15px'}}>
+      <span style={{position: 'absolute'}} >Кликов: {decrementCount}</span>
       <WrappedComponent onClick={onClick} color={color} size={size}>
         {children}
       </WrappedComponent>
