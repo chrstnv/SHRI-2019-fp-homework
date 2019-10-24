@@ -1,4 +1,4 @@
-/* 
+/*
  * Основная задача — написать самому, или найти в FP библиотеках функции anyPass/allPass
  * Эти функции/их аналоги есть и в ramda и в lodash
  *
@@ -61,19 +61,17 @@ const eqOne = x => equals(x, 1);
  * Функции для проверки выполнения условий с количеством цифр в строке
  */
 
-const getNumbers = str => match(/[0-9]/g, str);
+const numCountGtThanOne = compose(gtThanOne, getNumbersCount);
 
-const numCountGtThanOne = compose(gtThanOne, length, getNumbers);
+const numCountGtThanTwo = compose(gtThanTwo, getNumbersCount);
 
-const numCountGtThanTwo = compose(gtThanTwo, length, getNumbers);
+const numCountGtThanThree = compose(gtThanThree, getNumbersCount);
 
-const numCountGtThanThree = compose(gtThanThree, length, getNumbers);
+const numCountGtThanFour = compose(gtThanFour, getNumbersCount);
 
-const numCountGtThanFour = compose(gtThanFour, length, getNumbers);
+const numCountLtThanTwo = compose(ltThanTwo, getNumbersCount);
 
-const numCountLtThanTwo = compose(ltThanTwo, length, getNumbers);
-
-const numCountLtThanFive = compose(ltThanFive, length, getNumbers);
+const numCountLtThanFive = compose(ltThanFive, getNumbersCount);
 
 
 /**
